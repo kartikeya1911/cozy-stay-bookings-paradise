@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Room, RoomType } from '@/types/hotel';
@@ -101,8 +100,18 @@ const AdminPage = () => {
   const handleAddRoom = (data: z.infer<typeof roomSchema>) => {
     // In a real app, this would be an API call
     const newRoom: Room = {
-      id: `${hotelRooms.length + 1}`,
-      ...data,
+      id: `room-${Date.now()}`,
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      capacity: data.capacity,
+      size: data.size,
+      type: data.type as RoomType,
+      numberOfBeds: data.numberOfBeds,
+      bedType: data.bedType,
+      breakfast: data.breakfast,
+      pets: data.pets,
+      featured: data.featured,
       images: ["https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80&w=2070"],
       amenities: ["Free Wi-Fi", "TV", "Air conditioning"],
       rating: 4.0,
