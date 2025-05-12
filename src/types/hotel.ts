@@ -44,6 +44,7 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  isAdmin?: boolean;
   bookings?: Booking[];
 };
 
@@ -57,3 +58,23 @@ export type FilterOptions = {
 };
 
 export type SortOption = 'price-asc' | 'price-desc' | 'capacity' | 'size' | 'rating';
+
+export type PropertyListing = {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  amenities: string[];
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  roomCount: number;
+  images: string[];
+  status: 'pending' | 'approved' | 'rejected';
+  userId: string;
+  createdAt: Date;
+};

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -8,11 +8,21 @@ import { toast } from '@/components/ui/use-toast';
 const OrderSummary = () => {
   const { items, getTotalPrice, clearCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [subtotal, setSubtotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
   
-  const subtotal = getTotalPrice();
-  const tax = subtotal * 0.10; // 10% tax
-  const total = subtotal + tax;
+  // Update calculations whenever cart items change
+  useEffect(() => {
+    const calculatedSubtotal = getTotalPrice();
+    const calculatedTax = calculatedSubtotal * 0.10; // 10% tax
+    const calculatedTotal = calculatedSubtotal + calculatedTax;
+    
+    setSubtotal(calculatedSubtotal);
+    setTax(calculatedTax);
+    setTotal(calculatedTotal);
+  }, [items, getTotalPrice]);
   
   const handleCheckout = async () => {
     if (items.length === 0) {

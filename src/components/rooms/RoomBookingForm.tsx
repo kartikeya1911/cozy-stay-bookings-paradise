@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Room } from '@/types/hotel';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -32,13 +32,22 @@ const RoomBookingForm = ({ room }: RoomBookingFormProps) => {
   const [guests, setGuests] = useState(1);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [calendarType, setCalendarType] = useState<'checkIn' | 'checkOut'>('checkIn');
+  const [totalPrice, setTotalPrice] = useState(0);
   
   const { addToCart } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   
   const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
-  const totalPrice = nights * room.price;
+  
+  // Calculate total price whenever nights or guests change
+  useEffect(() => {
+    const calculatedNights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
+    const basePrice = calculatedNights * room.price;
+    // You could add extra fees based on number of guests if needed
+    const guestFee = guests > room.capacity / 2 ? (guests - Math.floor(room.capacity / 2)) * 25 : 0;
+    setTotalPrice(basePrice + guestFee);
+  }, [checkIn, checkOut, guests, room.price, room.capacity]);
   
   const handleCalendarOpen = (type: 'checkIn' | 'checkOut') => {
     setCalendarType(type);
@@ -209,6 +218,12 @@ const RoomBookingForm = ({ room }: RoomBookingFormProps) => {
             <span className="text-gray-600">Nights:</span>
             <span className="font-semibold">{nights}</span>
           </div>
+          {guests > room.capacity / 2 && (
+            <div className="flex justify-between mb-2">
+              <span className="text-gray-600">Extra Guest Fee:</span>
+              <span className="font-semibold">${(guests - Math.floor(room.capacity / 2)) * 25}</span>
+            </div>
+          )}
           <div className="flex justify-between border-t border-gray-200 pt-2 mt-2">
             <span className="text-gray-700 font-medium">Total:</span>
             <span className="text-xl font-bold">${totalPrice}</span>

@@ -18,6 +18,8 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import BookingsPage from "./pages/BookingsPage";
 import ProfilePage from "./pages/ProfilePage";
+import AdminPage from "./pages/AdminPage";
+import ListPropertyPage from "./pages/ListPropertyPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +43,8 @@ const App = () => (
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/bookings" element={<BookingsPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/list-property" element={<ListPropertyPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
